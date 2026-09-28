@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>IDLS - Production Report System</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+
+        tailwind.config = {
+
+            theme: {
+
+                extend: {
+
+                    colors: {
+
+                        idls: {
+
+                            900: "#0f172a",
+                            800: "#1e293b",
+                            700: "#334155",
+                            600: "#475569",
+                            500: "#64748b"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        };
+
+    </script>
+
+</head>
+
+
+<body class="bg-slate-100 min-h-screen text-slate-800">
+
+
+    <!-- ==================================================
+         HEADER
+    =================================================== -->
+
+    <header class="bg-slate-900 text-white shadow-lg">
+
+        <div class="max-w-7xl mx-auto px-6 py-5">
+
+            <div
+                class="flex flex-col md:flex-row md:items-center md:justify-between gap-3"
+            >
+
+                <div>
+
+                    <h1 class="text-2xl font-bold">
+                        IDLS
+                    </h1>
+
+                    <p class="text-slate-400 text-sm">
+                        Industrial Data Live System
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="currentDateTime"
+                    class="text-sm text-slate-300"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ==================================================
+         MAIN
+    =================================================== -->
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+
+
+        <!-- ==================================================
+             SUMMARY
+        =================================================== -->
+
+        <section
+            class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8"
+        >
+
+
+            <!-- TOTAL INPUT -->
+
+            <div class="bg-white rounded-xl shadow p-5">
+
+                <p class="text-sm text-slate-500">
+                    Total Input
+                </p>
+
+                <h2
+                    id="summaryInput"
+                    class="text-3xl font-bold mt-2"
+                >
+                    0
+                </h2>
+
+            </div>
+
+
+            <!-- TOTAL NG -->
+
+            <div class="bg-white rounded-xl shadow p-5">
+
+                <p class="text-sm text-red-500">
+                    Total NG / Defects
+                </p>
+
+                <h2
+                    id="summaryNG"
+                    class="text-3xl font-bold text-red-600 mt-2"
+                >
+                    0
+                </h2>
+
+            </div>
+
+
+            <!-- TOTAL OUTPUT -->
+
+            <div class="bg-white rounded-xl shadow p-5">
+
+                <p class="text-sm text-green-600">
+                    Total Output
+                </p>
+
+                <h2
+                    id="summaryOutput"
+                    class="text-3xl font-bold text-green-600 mt-2"
+                >
+                    0
+                </h2>
+
+            </div>
+
+
+            <!-- REPORTS -->
+
+            <div class="bg-white rounded-xl shadow p-5">
+
+                <p class="text-sm text-blue-600">
+                    Reports
+                </p>
+
+                <h2
+                    id="summaryReports"
+                    class="text-3xl font-bold text-blue-600 mt-2"
+                >
+                    0
+                </h2>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             PRODUCTION REPORT FORM
+        =================================================== -->
+
+        <section class="bg-white rounded-xl shadow mb-8">
+
+
+            <div class="px-6 py-5 border-b">
+
+                <h2
+                    id="formTitle"
+                    class="text-xl font-bold"
+                >
+                    Add Production Report
+                </h2>
+
+            </div>
+
+
+            <form
+                id="reportForm"
+                class="p-6"
+            >
+
+
+                <input
+                    type="hidden"
+                    id="reportId"
+                >
+
+
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5"
+                >
+
+
+                    <!-- DATE -->
+
+                    <div>
+
+                        <label
+                            class="block text-sm font-medium mb-2"
+                        >
+                            Date
+                        </label>
+
+
+                        <input
+                            type="date"
+                            id="date"
+                            required
+                            class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+
+                    </div>
+
+
+                    <!-- TIME -->
+
+                    <div>
+
+                        <label
+                            class="block text-sm font-medium mb-2"
+                        >
+                            Time
+                        </label>
+
+
+                        <input
+                            type="time"
+                            id="time"
+                            required
+                            class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+
+                    </div>
+
+
+                    <!-- SHIFT -->
+
+                    <div>
+
+                        <label
+                            class="block text-sm font-medium mb-2"
+                        >
+                            Shift
+                        </label>
+
+
+                        <select
+                            id="shift"
+                            required
+                            class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+
+                            <option value="">
+                                Select Shift
+                            </option>
+
+                            <option value="6AM-2PM">
+                                6AM-2PM
+                            </option>
+
+                            <option value="2PM-10PM">
+                                2PM-10PM
+                            </option>
+
+                            <option value="10PM-6AM">
+                                10PM-6AM
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- INPUT -->
+
+                    <div>
+
+                        <label
+                            class="block text-sm font-medium mb-2"
+                        >
+                            Total Input
+                        </label>
+
+
+                        <input
+                            type="number"
+                            id="totalInput"
+                            min="0"
+                            step="1"
+                            required
+                            placeholder="0"
+                            class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+
+                    </div>
+
+
+                    <!-- NG -->
+
+                    <div>
+
+                        <label
+                            class="block text-sm font-medium mb-2"
+                        >
+                            NG / Defects
+                        </label>
+
+
+                        <input
+                            type="number"
+                            id="ng"
+                            min="0"
+                            step="1"
+                            required
+                            placeholder="0"
+                            class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ==================================================
+                     AUTOMATIC OUTPUT
+                =================================================== -->
+
+                <div
+                    class="mt-6 bg-slate-50 border rounded-lg p-5"
+                >
+
+                    <div
+                        class="flex flex-col md:flex-row md:items-center md:justify-between gap-3"
+                    >
+
+                        <div>
+
+                            <p class="text-sm text-slate-500">
+                                Automatic Total Output
+                            </p>
+
+                            <p class="text-xs text-slate-400 mt-1">
+                                Total Input - NG / Defects
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            id="calculatedOutput"
+                            class="text-3xl font-bold text-green-600"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==================================================
+                     FORM BUTTONS
+                =================================================== -->
+
+                <div
+                    class="flex flex-wrap gap-3 mt-6"
+                >
+
+                    <button
+                        type="submit"
+                        id="saveButton"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium transition"
+                    >
+                        Save Report
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="cancelButton"
+                        class="hidden bg-slate-500 hover:bg-slate-600 text-white px-5 py-2.5 rounded-lg font-medium transition"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+        <!-- ==================================================
+             SEARCH / FILTER
+        =================================================== -->
+
+        <section
+            class="bg-white rounded-xl shadow mb-5 p-5"
+        >
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-4 gap-4"
+            >
+
+
+                <!-- SEARCH -->
+
+                <div class="md:col-span-2">
+
+                    <label
+                        class="block text-sm font-medium mb-2"
+                    >
+                        Search
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search date, shift..."
+                        class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+
+                </div>
+
+
+                <!-- DATE FILTER -->
+
+                <div>
+
+                    <label
+                        class="block text-sm font-medium mb-2"
+                    >
+                        Filter Date
+                    </label>
+
+
+                    <input
+                        type="date"
+                        id="filterDate"
+                        class="w-full border border-slate-300 rounded-lg px-3 py-2"
+                    >
+
+                </div>
+
+
+                <!-- SHIFT FILTER -->
+
+                <div>
+
+                    <label
+                        class="block text-sm font-medium mb-2"
+                    >
+                        Filter Shift
+                    </label>
+
+
+                    <select
+                        id="filterShift"
+                        class="w-full border border-slate-300 rounded-lg px-3 py-2"
+                    >
+
+                        <option value="">
+                            All Shifts
+                        </option>
+
+                        <option value="6AM-2PM">
+                            6AM-2PM
+                        </option>
+
+                        <option value="2PM-10PM">
+                            2PM-10PM
+                        </option>
+
+                        <option value="10PM-6AM">
+                            10PM-6AM
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================================
+             PRODUCTION DATA ACTIONS
+        =================================================== -->
+
+        <section
+            class="bg-white rounded-xl shadow mb-5 p-5"
+        >
+
+            <div
+                class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+            >
+
+
+                <!-- TITLE -->
+
+                <div>
+
+                    <h2 class="text-lg font-bold">
+                        Production Data
+                    </h2>
+
+                    <p class="text-sm text-slate-500">
+                        Save or load your production report data.
+                    </p>
+
+                </div>
+
+
+                <!-- ACTION BUTTONS -->
+
+                <div class="flex flex-wrap gap-2">
+
+
+                    <!-- SAVE -->
+
+                    <button
+                        type="button"
+                        id="saveProductionDataButton"
+                        class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg font-medium transition"
+                    >
+                        Save
+                    </button>
+
+
+                    <!-- UPLOAD -->
+
+                    <button
+                        type="button"
+                        id="uploadProductionDataButton"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium transition"
+                    >
+                        Upload
+                    </button>
+
+
+                    <!-- HIDDEN FILE INPUT -->
+
+                    <input
+                        type="file"
+                        id="productionDataFile"
+                        accept=".json,application/json"
+                        class="hidden"
+                    >
+
+
+                    <!-- REFRESH -->
+
+                    <button
+                        type="button"
+                        id="refreshProductionDataButton"
+                        class="bg-slate-700 hover:bg-slate-800 text-white px-5 py-2.5 rounded-lg font-medium transition"
+                    >
+                        Refresh
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div
+                id="statusBox"
+                class="hidden mt-4 rounded-lg px-4 py-3 text-sm"
+            ></div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             PRODUCTION REPORT TABLE
+        =================================================== -->
+
+        <section
+            class="bg-white rounded-xl shadow overflow-hidden"
+        >
+
+
+            <div class="px-6 py-5 border-b">
+
+                <h2 class="text-xl font-bold">
+                    Production Reports
+                </h2>
+
+            </div>
+
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full text-sm">
+
+
+                    <thead
+                        class="bg-slate-900 text-white"
+                    >
+
+                        <tr>
+
+                            <th class="px-4 py-3 text-left">
+                                ID
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                Date
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                Time
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                Shift
+                            </th>
+
+                            <th class="px-4 py-3 text-right">
+                                Input
+                            </th>
+
+                            <th class="px-4 py-3 text-right">
+                                NG
+                            </th>
+
+                            <th class="px-4 py-3 text-right">
+                                Output
+                            </th>
+
+                            <th class="px-4 py-3 text-center">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="reportsTableBody"
+                    ></tbody>
+
+
+                </table>
+
+            </div>
+
+
+            <div
+                id="emptyState"
+                class="hidden text-center py-12 text-slate-500"
+            >
+                No production reports found.
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ==================================================
+         FOOTER
+    =================================================== -->
+
+    <footer
+        class="text-center text-slate-500 text-sm py-8"
+    >
+        All Rights Reserve @2026-2027 Dev.Ando
+    </footer>
+
+
+    <!-- ==================================================
+         JAVASCRIPT
+    =================================================== -->
+
+    <script src="./script.js"></script>
+
+
+</body>
+
+</html>
